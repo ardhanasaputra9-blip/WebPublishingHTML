@@ -1,0 +1,123 @@
+<html>
+	<head>
+		<title>Muhammad Ardhana Saputra Kota Palu</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<style>
+			body {
+				margin: 0;
+			}
+			.header {
+				background-color: #2ecc71; 
+				color: white;
+				text-align: center;
+				padding: 15px;
+				font-size: 24px;
+				font-family: Arial, sans-serif;
+				font-weight: bold;
+			}
+			#map {
+				width: 100%;
+				height: calc(100vh - 60px);
+			}
+			.keterangan {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				background-color: rgba(255, 255, 255, 0.9);
+				border: 2px solid #2ecc71;
+				border-radius: 10px;
+				padding: 10px 15px;
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+				width: 220px;
+				z-index: 1000; /* agar tidak ketutupan peta */
+			}
+
+			.keterangan h3 {
+				margin-top: 0;
+				font-size: 16px;
+				color: #2ecc71;
+				text-align: center;
+				border-bottom: 1px solid #2ecc71;
+				padding-bottom: 5px;
+			}
+
+			.keterangan ul {
+				margin: 8px 0 0 15px;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">Muhammad Ardhana Saputra - Kota Palu</div>
+		<div id="map"></div>
+
+		<!-- Kotak Keterangan -->
+		<div class="keterangan">
+			<h3>Keterangan</h3>
+			<ul>
+				<li><span style="color:red;">●</span> Titik Kota Palu</li>
+				<li><span style="color:orange;">●</span> Area Lingkar Radius</li>
+				<li><span style="color:blue;">―</span> Garis Polyline</li>
+				<li><span style="color:red;">■</span> Area Polygon</li>
+			</ul>
+		</div>
+
+		<script>
+			var mapOptions = {
+				center: [-0.8987235118652229, 119.87659473113104],
+				zoom: 10
+			}
+			var map = new L.map('map', mapOptions);
+
+			var layer = new L.TileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+				maxZoom: 20,
+				subdomains:['mt0','mt1','mt2','mt3']
+			});
+			map.addLayer(layer);
+
+			L.circleMarker([-0.8987235118652229, 119.87659473113104], {
+				radius: 10,
+				color: "black",
+				fillColor: "red",
+				fillOpacity: 0.9
+			}).bindPopup("Palu").addTo(map);
+
+			var latlngs = [
+				[-0.803134742280423, 119.80658378472212],
+				[-0.8904735339433352, 119.76794894133111],
+				[-0.9408603701116408, 119.82842087011706],
+				[-0.8675193001111433, 120.03839284506826],
+				[-0.6334907845275078, 119.92640779176095]
+			];
+
+			var polyline = L.polyline(latlngs, {color: 'blue'});
+			var polygon = L.polygon(latlngs, {color: 'red'});
+			polyline.addTo(map);
+			polygon.addTo(map);
+
+			var circleCenter = [
+				["Palu", -0.803134742280423, 119.80658378472212],
+				["Palu", -0.8904735339433352, 119.76794894133111],
+				["Palu", -0.9408603701116408, 119.82842087011706],
+				["Palu", -0.8675193001111433, 120.03839284506826],
+				["Palu", -0.6334907845275078, 119.92640779176095]
+			];
+
+			for (var i = 0; i < circleCenter.length; i++) {
+				L.circle([circleCenter[i][1], circleCenter[i][2]], {
+					fillOpacity: .8,
+					color: 'black',
+					fillColor: '#ffa500',
+					weight: 3,
+					radius: 3000,
+					stroke: true
+				})
+				.bindPopup(circleCenter[i][0])
+				.addTo(map);
+			}
+		</script>
+	</body>
+</html>
